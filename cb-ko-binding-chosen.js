@@ -43,7 +43,7 @@ data-bind = "table: {
             }
 
             chosen.change(function (event, data) {
-                _.CO.updateValue(value, $(element).val(), element, allBindingsAccessor);
+                _.CO.updateValue(valueAccessor, $(element).val(), element, allBindingsAccessor);
                 //if (ko.isObservable(value.selectedValue)) {
                 //    value.selectedValue(data.selected);
                 //} else {
@@ -56,7 +56,9 @@ data-bind = "table: {
         },
 
         //set the bound view model property value to the selected value
-        updateValue: function (databoundValue, selectedOptionValue, element, allBindingsAccessor) {
+        updateValue: function (valueAccessor, selectedOptionValue, element, allBindingsAccessor) {
+            var databoundValue = valueAccessor();
+            
             //the value of option is alwasy the index so we must convet it to the corresponding data item
             if ($.isArray(selectedOptionValue) && databoundValue.selectedValueItemProp) {
                 throw "Not supported yet";
@@ -112,7 +114,7 @@ data-bind = "table: {
 
             //for the case, if the selected value is not any option, but the chose is set to single select mode, then it will select the frist value, but won't trigger change event
             //so we force the value are always same between the element and the viewmodel
-            _.CO.updateValue(valueAccessor(), $(element).val(), element, allBindingsAccessor);
+            _.CO.updateValue(valueAccessor, $(element).val(), element, allBindingsAccessor);
 
             $(element).trigger("chosen:updated");
         },
